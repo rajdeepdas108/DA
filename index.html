@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAA Lab - Dark Theme</title>
+    <style>
+        /* Dark Theme Base Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212; 
+            color: #e0e0e0; 
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #90caf9; 
+            border-bottom: 3px solid #1976d2;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        h2.section-title {
+            color: #ffb74d; /* Orange accent for extra sections */
+            border-bottom: 2px solid #f57c00;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        /* Collapsible Section Styling */
+        details {
+            background: #1e1e1e; 
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid #333333;
+            overflow: hidden;
+        }
+        summary {
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff; 
+            background-color: #292929; 
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        summary:hover {
+            background-color: #333333;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary::after {
+            content: '▼';
+            font-size: 0.9rem;
+            color: #888888;
+            transition: transform 0.2s ease;
+        }
+        details[open] summary::after {
+            transform: rotate(180deg);
+        }
+        details[open] summary {
+            border-bottom: 1px solid #444444;
+        }
+        .content {
+            padding: 20px;
+        }
+        
+        /* Toolbar & Button Styling */
+        .toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        .copy-btn {
+            background-color: #1976d2; 
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+        .copy-btn:hover {
+            background-color: #1565c0;
+        }
+        
+        /* Code Block & Output Styling */
+        pre {
+            background-color: #0d0d0d; 
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            margin: 0 0 15px 0;
+            border: 1px solid #2a2a2a;
+        }
+        .sample-io {
+            background-color: #252526; 
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #cccccc;
+            white-space: pre-wrap;
+            border-left: 4px solid #1976d2;
+        }
+        .sample-io strong {
+            display: block;
+            margin-bottom: 8px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.95rem;
+            color: #90caf9; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>DAA Lab Experiments</h1>
+
+    <details>
+        <summary>1. Binary Search (Recursive)</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c1')">Copy Code</button></div>
+<pre><code id="c1">#include &lt;stdio.h&gt;
+
+int binarySearch(int arr[], int l, int r, int x) {
+    if (r &gt;= l) {
+        int mid = l + (r - l) / 2;
+        if (arr[mid] == x) return mid;
+        if (arr[mid] &gt; x) return binarySearch(arr, l, mid - 1, x);
+        return binarySearch(arr, mid + 1, r, x);
+    }
+    return -1;
+}
+
+int main() {
+    int n, x;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter %d sorted elements: ", n);
+    for(int i = 0; i &lt; n; i++) scanf("%d", &arr[i]);
+    
+    printf("Enter element to search: ");
+    scanf("%d", &x);
+    
+    int result = binarySearch(arr, 0, n - 1, x);
+    if (result == -1) printf("Element not present in array\n");
+    else printf("Element found at index %d\n", result);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of elements: 5
+Enter 5 sorted elements: 2 4 6 8 10
+Enter element to search: 8
+Element found at index 3</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>2. Quick Sort Algorithm</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c2')">Copy Code</button></div>
+<pre><code id="c2">#include &lt;stdio.h&gt;
+
+void swap(int* a, int* b) { int t = *a; *a = *b; *b = t; }
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+    for (int j = low; j &lt;= high - 1; j++) {
+        if (arr[j] &lt; pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low &lt; high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter the elements: ");
+    for(int i=0; i&lt;n; i++) scanf("%d", &arr[i]);
+    
+    quickSort(arr, 0, n - 1);
+    
+    printf("Sorted array: ");
+    for (int i = 0; i &lt; n; i++) printf("%d ", arr[i]);
+    printf("\n");
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of elements: 6
+Enter the elements: 10 7 8 9 1 5
+Sorted array: 1 5 7 8 9 10</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>3. Merge Sort Algorithm</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c3')">Copy Code</button></div>
+<pre><code id="c3">#include &lt;stdio.h&gt;
+
+void merge(int arr[], int l, int m, int r) {
+    int n1 = m - l + 1, n2 = r - m;
+    int L[n1], R[n2];
+    for (int i = 0; i &lt; n1; i++) L[i] = arr[l + i];
+    for (int j = 0; j &lt; n2; j++) R[j] = arr[m + 1 + j];
+    
+    int i = 0, j = 0, k = l;
+    while (i &lt; n1 && j &lt; n2) {
+        if (L[i] &lt;= R[j]) arr[k++] = L[i++];
+        else arr[k++] = R[j++];
+    }
+    while (i &lt; n1) arr[k++] = L[i++];
+    while (j &lt; n2) arr[k++] = R[j++];
+}
+
+void mergeSort(int arr[], int l, int r) {
+    if (l &lt; r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter the elements: ");
+    for(int i=0; i&lt;n; i++) scanf("%d", &arr[i]);
+
+    mergeSort(arr, 0, n - 1);
+
+    printf("Sorted array: ");
+    for (int i = 0; i &lt; n; i++) printf("%d ", arr[i]);
+    printf("\n");
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of elements: 5
+Enter the elements: 38 27 43 3 9
+Sorted array: 3 9 27 38 43</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>4. Fractional Knapsack Problem</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c4')">Copy Code</button></div>
+<pre><code id="c4">#include &lt;stdio.h&gt;
+
+struct Item { int value, weight; };
+
+void fractionalKnapsack(int W, struct Item arr[], int n) {
+    for(int i = 0; i &lt; n - 1; i++) {
+        for(int j = 0; j &lt; n - i - 1; j++) {
+            double r1 = (double)arr[j].value / arr[j].weight;
+            double r2 = (double)arr[j+1].value / arr[j+1].weight;
+            if(r1 &lt; r2) {
+                struct Item temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+
+    double finalValue = 0.0;
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i].weight &lt;= W) {
+            W -= arr[i].weight;
+            finalValue += arr[i].value;
+        } else {
+            finalValue += arr[i].value * ((double)W / arr[i].weight);
+            break;
+        }
+    }
+    printf("Maximum value in Knapsack = %.2f\n", finalValue);
+}
+
+int main() {
+    int n, W;
+    printf("Enter capacity of knapsack: ");
+    scanf("%d", &W);
+    printf("Enter number of items: ");
+    scanf("%d", &n);
+    struct Item arr[n];
+    for(int i=0; i&lt;n; i++) {
+        printf("Enter value and weight for item %d: ", i+1);
+        scanf("%d %d", &arr[i].value, &arr[i].weight);
+    }
+    fractionalKnapsack(W, arr, n);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter capacity of knapsack: 50
+Enter number of items: 3
+Enter value and weight for item 1: 60 10
+Enter value and weight for item 2: 100 20
+Enter value and weight for item 3: 120 30
+Maximum value in Knapsack = 240.00</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>5. Job Scheduling with Deadline</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c5')">Copy Code</button></div>
+<pre><code id="c5">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+struct Job { int id, dead, profit; };
+
+void jobScheduling(struct Job arr[], int n) {
+    for (int i = 0; i &lt; n - 1; i++) {
+        for (int j = 0; j &lt; n - i - 1; j++) {
+            if (arr[j].profit &lt; arr[j + 1].profit) {
+                struct Job temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    int result[n]; 
+    bool slot[n];  
+    for (int i = 0; i &lt; n; i++) slot[i] = false;
+
+    int totalProfit = 0;
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = (arr[i].dead &gt; n ? n : arr[i].dead) - 1; j &gt;= 0; j--) {
+            if (!slot[j]) {
+                result[j] = i;  
+                slot[j] = true; 
+                totalProfit += arr[i].profit;
+                break;
+            }
+        }
+    }
+
+    printf("Selected Jobs Sequence: ");
+    for (int i = 0; i &lt; n; i++)
+        if (slot[i]) printf("Job%d ", arr[result[i]].id);
+    printf("\nTotal Profit: %d\n", totalProfit);
+}
+
+int main() {
+    int n;
+    printf("Enter number of jobs: ");
+    scanf("%d", &n);
+    struct Job arr[n];
+    for(int i=0; i&lt;n; i++) {
+        arr[i].id = i + 1;
+        printf("Enter deadline and profit for Job %d: ", i + 1);
+        scanf("%d %d", &arr[i].dead, &arr[i].profit);
+    }
+    jobScheduling(arr, n);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of jobs: 4
+Enter deadline and profit for Job 1: 4 20
+Enter deadline and profit for Job 2: 1 10
+Enter deadline and profit for Job 3: 1 40
+Enter deadline and profit for Job 4: 1 30
+Selected Jobs Sequence: Job3 Job1
+Total Profit: 60</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>6. Dijkstra’s Algorithm</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c6')">Copy Code</button></div>
+<pre><code id="c6">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;stdbool.h&gt;
+
+int minDistance(int dist[], bool sptSet[], int V) {
+    int min = INT_MAX, min_index;
+    for (int v = 0; v &lt; V; v++)
+        if (sptSet[v] == false && dist[v] &lt;= min)
+            min = dist[v], min_index = v;
+    return min_index;
+}
+
+int main() {
+    int V, src;
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+    int graph[100][100];
+    
+    printf("Enter the adjacency matrix (use 0 for no edge):\n");
+    for(int i=0; i&lt;V; i++)
+        for(int j=0; j&lt;V; j++)
+            scanf("%d", &graph[i][j]);
+            
+    printf("Enter source vertex (0 to %d): ", V-1);
+    scanf("%d", &src);
+
+    int dist[V]; 
+    bool sptSet[V];
+    for (int i = 0; i &lt; V; i++) dist[i] = INT_MAX, sptSet[i] = false;
+    dist[src] = 0;
+
+    for (int count = 0; count &lt; V - 1; count++) {
+        int u = minDistance(dist, sptSet, V);
+        sptSet[u] = true;
+        for (int v = 0; v &lt; V; v++)
+            if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX 
+                && dist[u] + graph[u][v] &lt; dist[v])
+                dist[v] = dist[u] + graph[u][v];
+    }
+
+    printf("Vertex \t Distance from Source\n");
+    for (int i = 0; i &lt; V; i++) printf("%d \t %d\n", i, dist[i]);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices: 3
+Enter the adjacency matrix (use 0 for no edge):
+0 4 0
+4 0 3
+0 3 0
+Enter source vertex (0 to 2): 0
+Vertex   Distance from Source
+0        0
+1        4
+2        7</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>7. Prim's Algorithm</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c7')">Copy Code</button></div>
+<pre><code id="c7">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;stdbool.h&gt;
+
+int minKey(int key[], bool mstSet[], int V) {
+    int min = INT_MAX, min_index;
+    for (int v = 0; v &lt; V; v++)
+        if (mstSet[v] == false && key[v] &lt; min)
+            min = key[v], min_index = v;
+    return min_index;
+}
+
+int main() {
+    int V;
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+    int graph[100][100];
+    
+    printf("Enter the adjacency matrix:\n");
+    for(int i=0; i&lt;V; i++)
+        for(int j=0; j&lt;V; j++)
+            scanf("%d", &graph[i][j]);
+
+    int parent[V], key[V];
+    bool mstSet[V];
+    for (int i = 0; i &lt; V; i++) key[i] = INT_MAX, mstSet[i] = false;
+    
+    key[0] = 0; parent[0] = -1;
+    for (int count = 0; count &lt; V - 1; count++) {
+        int u = minKey(key, mstSet, V);
+        mstSet[u] = true;
+        for (int v = 0; v &lt; V; v++)
+            if (graph[u][v] && mstSet[v] == false && graph[u][v] &lt; key[v])
+                parent[v] = u, key[v] = graph[u][v];
+    }
+
+    printf("Edge \tWeight\n");
+    for (int i = 1; i &lt; V; i++)
+        printf("%d - %d \t%d \n", parent[i], i, graph[i][parent[i]]);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices: 3
+Enter the adjacency matrix:
+0 5 1
+5 0 3
+1 3 0
+Edge    Weight
+2 - 1   3 
+0 - 2   1</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>8. Kruskal's Algorithm</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c8')">Copy Code</button></div>
+<pre><code id="c8">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Edge { int src, dest, weight; };
+
+int find(int parent[], int i) {
+    if (parent[i] == i) return i;
+    return find(parent, parent[i]);
+}
+
+void Union(int parent[], int x, int y) {
+    int xset = find(parent, x);
+    int yset = find(parent, y);
+    parent[xset] = yset;
+}
+
+int myComp(const void* a, const void* b) {
+    return ((struct Edge*)a)-&gt;weight &gt; ((struct Edge*)b)-&gt;weight;
+}
+
+int main() {
+    int V, E;
+    printf("Enter number of vertices and edges: ");
+    scanf("%d %d", &V, &E);
+    
+    struct Edge edges[E];
+    printf("Enter source, destination, and weight for each edge:\n");
+    for(int i=0; i&lt;E; i++)
+        scanf("%d %d %d", &edges[i].src, &edges[i].dest, &edges[i].weight);
+
+    qsort(edges, E, sizeof(edges[0]), myComp);
+    
+    int parent[V];
+    for (int v = 0; v &lt; V; v++) parent[v] = v;
+    
+    struct Edge result[V];
+    int e = 0, i = 0;
+    
+    while (e &lt; V - 1 && i &lt; E) {
+        struct Edge next_edge = edges[i++];
+        int x = find(parent, next_edge.src);
+        int y = find(parent, next_edge.dest);
+        if (x != y) {
+            result[e++] = next_edge;
+            Union(parent, x, y);
+        }
+    }
+
+    printf("Edges in the constructed MST:\n");
+    for (i = 0; i &lt; e; ++i)
+        printf("%d -- %d == %d\n", result[i].src, result[i].dest, result[i].weight);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices and edges: 4 5
+Enter source, destination, and weight for each edge:
+0 1 10
+0 2 6
+0 3 5
+1 3 15
+2 3 4
+Edges in the constructed MST:
+2 -- 3 == 4
+0 -- 3 == 5
+0 -- 1 == 10</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>10. Matrix Chain Multiplication</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c10')">Copy Code</button></div>
+<pre><code id="c10">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+void printParenthesis(int i, int j, int n, int bracket[n][n], char* name) {
+    if (i == j) {
+        printf("%c", (*name)++);
+        return;
+    }
+    printf("(");
+    printParenthesis(i, bracket[i][j], n, bracket, name);
+    printParenthesis(bracket[i][j] + 1, j, n, bracket, name);
+    printf(")");
+}
+
+int main() {
+    int num;
+    printf("Enter number of matrices: ");
+    scanf("%d", &num);
+    int n = num + 1;
+    int p[n];
+    printf("Enter the dimensions array (size %d): ", n);
+    for(int i=0; i&lt;n; i++) scanf("%d", &p[i]);
+
+    int m[n][n], bracket[n][n];
+    for (int i = 1; i &lt; n; i++) m[i][i] = 0;
+
+    for (int L = 2; L &lt; n; L++) {
+        for (int i = 1; i &lt; n - L + 1; i++) {
+            int j = i + L - 1;
+            m[i][j] = INT_MAX;
+            for (int k = i; k &lt;= j - 1; k++) {
+                int q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+                if (q &lt; m[i][j]) {
+                    m[i][j] = q;
+                    bracket[i][j] = k;
+                }
+            }
+        }
+    }
+    
+    char name = 'A';
+    printf("Optimal Parenthesization is : ");
+    printParenthesis(1, n - 1, n, bracket, &name);
+    printf("\nOptimal Cost is : %d\n", m[1][n - 1]);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of matrices: 4
+Enter the dimensions array (size 5): 40 20 30 10 30
+Optimal Parenthesization is : ((A(BC))D)
+Optimal Cost is : 26000</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>9. Bellman Ford Algorithm</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c9')">Copy Code</button></div>
+<pre><code id="c9">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+struct Edge { int src, dest, weight; };
+
+int main() {
+    int V, E, src;
+    printf("Enter number of vertices and edges: ");
+    scanf("%d %d", &V, &E);
+    
+    struct Edge edges[E];
+    printf("Enter source, destination, and weight for each edge:\n");
+    for(int i=0; i&lt;E; i++)
+        scanf("%d %d %d", &edges[i].src, &edges[i].dest, &edges[i].weight);
+        
+    printf("Enter source vertex: ");
+    scanf("%d", &src);
+
+    int dist[V];
+    for (int i = 0; i &lt; V; i++) dist[i] = INT_MAX;
+    dist[src] = 0;
+
+    for (int i = 1; i &lt;= V - 1; i++) {
+        for (int j = 0; j &lt; E; j++) {
+            int u = edges[j].src;
+            int v = edges[j].dest;
+            int weight = edges[j].weight;
+            if (dist[u] != INT_MAX && dist[u] + weight &lt; dist[v])
+                dist[v] = dist[u] + weight;
+        }
+    }
+
+    for (int i = 0; i &lt; E; i++) {
+        int u = edges[i].src;
+        int v = edges[i].dest;
+        int weight = edges[i].weight;
+        if (dist[u] != INT_MAX && dist[u] + weight &lt; dist[v]) {
+            printf("Graph contains negative weight cycle\n");
+            return 0;
+        }
+    }
+    
+    printf("Vertex Distance from Source\n");
+    for (int i = 0; i &lt; V; ++i) printf("%d \t %d\n", i, dist[i]);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices and edges: 3 3
+Enter source, destination, and weight for each edge:
+0 1 4
+1 2 -2
+0 2 5
+Enter source vertex: 0
+Vertex Distance from Source
+0        0
+1        4
+2        2</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>11. Floyd Warshall Algorithm</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c11')">Copy Code</button></div>
+<pre><code id="c11">#include &lt;stdio.h&gt;
+#define INF 99999
+
+int main() {
+    int V;
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+    int dist[V][V];
+    
+    printf("Enter adjacency matrix (Use 99999 for Infinity):\n");
+    for(int i=0; i&lt;V; i++)
+        for(int j=0; j&lt;V; j++)
+            scanf("%d", &dist[i][j]);
+
+    for (int k = 0; k &lt; V; k++) {
+        for (int i = 0; i &lt; V; i++) {
+            for (int j = 0; j &lt; V; j++) {
+                if (dist[i][k] + dist[k][j] &lt; dist[i][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
+            }
+        }
+    }
+    
+    printf("Shortest distances between every pair of vertices:\n");
+    for (int i = 0; i &lt; V; i++) {
+        for (int j = 0; j &lt; V; j++) {
+            if (dist[i][j] &gt;= INF/2) printf("  INF");
+            else printf("%5d", dist[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices: 4
+Enter adjacency matrix (Use 99999 for Infinity):
+0 5 99999 10
+99999 0 3 99999
+99999 99999 0 1
+99999 99999 99999 0
+Shortest distances between every pair of vertices:
+    0    5    8    9
+  INF    0    3    4
+  INF  INF    0    1
+  INF  INF  INF    0</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>12. N-Queen Problem</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c12')">Copy Code</button></div>
+<pre><code id="c12">#include &lt;stdbool.h&gt;
+#include &lt;stdio.h&gt;
+
+int N;
+
+bool isSafe(int board[20][20], int row, int col) {
+    int i, j;
+    for (i = 0; i &lt; col; i++)
+        if (board[row][i]) return false;
+    for (i = row, j = col; i &gt;= 0 && j &gt;= 0; i--, j--)
+        if (board[i][j]) return false;
+    for (i = row, j = col; j &gt;= 0 && i &lt; N; i++, j--)
+        if (board[i][j]) return false;
+    return true;
+}
+
+bool solveNQUtil(int board[20][20], int col) {
+    if (col &gt;= N) return true;
+    for (int i = 0; i &lt; N; i++) {
+        if (isSafe(board, i, col)) {
+            board[i][col] = 1;
+            if (solveNQUtil(board, col + 1)) return true;
+            board[i][col] = 0; // backtrack
+        }
+    }
+    return false;
+}
+
+int main() {
+    printf("Enter number of Queens (N): ");
+    scanf("%d", &N);
+    int board[20][20] = {0};
+    
+    if (!solveNQUtil(board, 0)) {
+        printf("Solution does not exist\n");
+        return 0;
+    }
+    
+    printf("Arrangement:\n");
+    for (int i = 0; i &lt; N; i++) {
+        for (int j = 0; j &lt; N; j++) printf(" %d ", board[i][j]);
+        printf("\n");
+    }
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of Queens (N): 4
+Arrangement:
+ 0  0  1  0 
+ 1  0  0  0 
+ 0  0  0  1 
+ 0  1  0  0 </div>
+        </div>
+    </details>
+
+    <details>
+        <summary>13. Graph Colouring Problem</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c13')">Copy Code</button></div>
+<pre><code id="c13">#include &lt;stdbool.h&gt;
+#include &lt;stdio.h&gt;
+
+int V;
+
+bool isSafe(int v, int graph[20][20], int color[], int c) {
+    for (int i = 0; i &lt; V; i++)
+        if (graph[v][i] && c == color[i])
+            return false;
+    return true;
+}
+
+bool graphColoringUtil(int graph[20][20], int m, int color[], int v) {
+    if (v == V) return true;
+    for (int c = 1; c &lt;= m; c++) {
+        if (isSafe(v, graph, color, c)) {
+            color[v] = c;
+            if (graphColoringUtil(graph, m, color, v + 1) == true)
+                return true;
+            color[v] = 0; 
+        }
+    }
+    return false;
+}
+
+int main() {
+    int m;
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+    
+    int graph[20][20];
+    printf("Enter adjacency matrix:\n");
+    for(int i=0; i&lt;V; i++)
+        for(int j=0; j&lt;V; j++)
+            scanf("%d", &graph[i][j]);
+            
+    printf("Enter number of maximum colors (m): ");
+    scanf("%d", &m);
+    
+    int color[20] = {0};
+    if (graphColoringUtil(graph, m, color, 0) == false)
+        printf("Solution does not exist\n");
+    else {
+        printf("Assigned Colors are:\n");
+        for (int i = 0; i &lt; V; i++) printf("Vertex %d: Color %d\n", i, color[i]);
+    }
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices: 4
+Enter adjacency matrix:
+0 1 1 1
+1 0 1 0
+1 1 0 1
+1 0 1 0
+Enter number of maximum colors (m): 3
+Assigned Colors are:
+Vertex 0: Color 1
+Vertex 1: Color 2
+Vertex 2: Color 3
+Vertex 3: Color 2</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>14. 0-1 Knapsack Problem</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c14')">Copy Code</button></div>
+<pre><code id="c14">#include &lt;stdio.h&gt;
+
+int max(int a, int b) { return (a &gt; b) ? a : b; }
+
+int main() {
+    int n, W;
+    printf("Enter number of items: ");
+    scanf("%d", &n);
+    printf("Enter maximum weight (W): ");
+    scanf("%d", &W);
+    
+    int val[n], wt[n];
+    printf("Enter values of %d items: ", n);
+    for(int i=0; i&lt;n; i++) scanf("%d", &val[i]);
+    
+    printf("Enter weights of %d items: ", n);
+    for(int i=0; i&lt;n; i++) scanf("%d", &wt[i]);
+
+    int K[n + 1][W + 1];
+
+    for (int i = 0; i &lt;= n; i++) {
+        for (int w = 0; w &lt;= W; w++) {
+            if (i == 0 || w == 0)
+                K[i][w] = 0;
+            else if (wt[i - 1] &lt;= w)
+                K[i][w] = max(val[i - 1] + K[i - 1][w - wt[i - 1]], K[i - 1][w]);
+            else
+                K[i][w] = K[i - 1][w];
+        }
+    }
+    printf("Maximum value = %d\n", K[n][W]);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of items: 3
+Enter maximum weight (W): 50
+Enter values of 3 items: 60 100 120
+Enter weights of 3 items: 10 20 30
+Maximum value = 220</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>15. Traveling Salesman Problem (DP)</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c15')">Copy Code</button></div>
+<pre><code id="c15">#include &lt;stdio.h&gt;
+#define MAX 9999
+
+int n;
+int dist[15][15];
+int memo[15][1 &lt;&lt; 15];
+
+int tsp(int i, int mask) {
+    if (mask == ((1 &lt;&lt; n) - 1)) return dist[i][0];
+    if (memo[i][mask] != -1) return memo[i][mask];
+    
+    int ans = MAX;
+    for (int j = 0; j &lt; n; j++) {
+        if ((mask & (1 &lt;&lt; j)) == 0) {
+            int newAns = dist[i][j] + tsp(j, mask | (1 &lt;&lt; j));
+            if (newAns &lt; ans) ans = newAns;
+        }
+    }
+    return memo[i][mask] = ans;
+}
+
+int main() {
+    printf("Enter number of cities (n): ");
+    scanf("%d", &n);
+    printf("Enter distance matrix:\n");
+    for(int i=0; i&lt;n; i++)
+        for(int j=0; j&lt;n; j++)
+            scanf("%d", &dist[i][j]);
+
+    for(int i = 0; i &lt; n; i++)
+        for(int j = 0; j &lt; (1&lt;&lt;n); j++)
+            memo[i][j] = -1;
+            
+    printf("The minimum cost is %d\n", tsp(0, 1));
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of cities (n): 4
+Enter distance matrix:
+0 10 15 20
+10 0 35 25
+15 35 0 30
+20 25 30 0
+The minimum cost is 80</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>16. Breadth First Search (BFS)</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c16')">Copy Code</button></div>
+<pre><code id="c16">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+int main() {
+    int V, start;
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+    
+    int graph[20][20];
+    printf("Enter adjacency matrix:\n");
+    for(int i=0; i&lt;V; i++)
+        for(int j=0; j&lt;V; j++)
+            scanf("%d", &graph[i][j]);
+            
+    printf("Enter starting vertex (0 to %d): ", V-1);
+    scanf("%d", &start);
+
+    bool visited[20] = {false};
+    int queue[20], front = 0, rear = 0;
+    
+    visited[start] = true;
+    queue[rear++] = start;
+    
+    printf("BFS Traversal: ");
+    while (front &lt; rear) {
+        int current = queue[front++];
+        printf("%d ", current);
+        
+        for (int i = 0; i &lt; V; i++) {
+            if (graph[current][i] == 1 && !visited[i]) {
+                visited[i] = true;
+                queue[rear++] = i;
+            }
+        }
+    }
+    printf("\n");
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices: 4
+Enter adjacency matrix:
+0 1 1 0
+1 0 0 1
+1 0 0 1
+0 1 1 0
+Enter starting vertex (0 to 3): 0
+BFS Traversal: 0 1 2 3</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>17. Depth First Search (DFS)</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c17')">Copy Code</button></div>
+<pre><code id="c17">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+int V;
+int graph[20][20];
+bool visited[20] = {false};
+
+void DFSUtil(int current) {
+    visited[current] = true;
+    printf("%d ", current);
+    
+    for (int i = 0; i &lt; V; i++) {
+        if (graph[current][i] == 1 && !visited[i]) {
+            DFSUtil(i);
+        }
+    }
+}
+
+int main() {
+    int start;
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+    
+    printf("Enter adjacency matrix:\n");
+    for(int i=0; i&lt;V; i++)
+        for(int j=0; j&lt;V; j++)
+            scanf("%d", &graph[i][j]);
+            
+    printf("Enter starting vertex (0 to %d): ", V-1);
+    scanf("%d", &start);
+
+    printf("DFS Traversal: ");
+    DFSUtil(start);
+    printf("\n");
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices: 4
+Enter adjacency matrix:
+0 1 1 0
+1 0 0 1
+1 0 0 1
+0 1 1 0
+Enter starting vertex (0 to 3): 0
+DFS Traversal: 0 1 3 2</div>
+        </div>
+    </details>
+
+
+    <h2 class="section-title">Extra Experiments</h2>
+
+    <details>
+        <summary>Extra 1: Max-Min (Brute Force)</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c18')">Copy Code</button></div>
+<pre><code id="c18">#include &lt;stdio.h&gt;
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    
+    int arr[n];
+    printf("Enter the elements: ");
+    for(int i=0; i&lt;n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    
+    int max = arr[0];
+    int min = arr[0];
+    
+    for(int i=1; i&lt;n; i++) {
+        if(arr[i] &gt; max) max = arr[i];
+        if(arr[i] &lt; min) min = arr[i];
+    }
+    
+    printf("Maximum element is: %d\n", max);
+    printf("Minimum element is: %d\n", min);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of elements: 5
+Enter the elements: 15 2 7 99 4
+Maximum element is: 99
+Minimum element is: 2</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>Extra 2: Hamiltonian Cycle</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c19')">Copy Code</button></div>
+<pre><code id="c19">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+int V;
+int graph[20][20];
+int path[20];
+
+bool isSafe(int v, int pos) {
+    if (graph[path[pos - 1]][v] == 0) return false;
+    for (int i = 0; i &lt; pos; i++)
+        if (path[i] == v) return false;
+    return true;
+}
+
+bool hamCycleUtil(int pos) {
+    if (pos == V) {
+        if (graph[path[pos - 1]][path[0]] == 1) return true;
+        else return false;
+    }
+    for (int v = 1; v &lt; V; v++) {
+        if (isSafe(v, pos)) {
+            path[pos] = v;
+            if (hamCycleUtil(pos + 1) == true) return true;
+            path[pos] = -1; // Backtrack
+        }
+    }
+    return false;
+}
+
+int main() {
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+    
+    printf("Enter adjacency matrix:\n");
+    for(int i=0; i&lt;V; i++)
+        for(int j=0; j&lt;V; j++)
+            scanf("%d", &graph[i][j]);
+
+    for (int i = 0; i &lt; V; i++) path[i] = -1;
+    path[0] = 0; // Start at vertex 0
+
+    if (hamCycleUtil(1) == false) {
+        printf("Solution does not exist\n");
+    } else {
+        printf("Hamiltonian Cycle exists:\n");
+        for (int i = 0; i &lt; V; i++) printf(" %d ", path[i]);
+        printf(" %d \n", path[0]);
+    }
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of vertices: 5
+Enter adjacency matrix:
+0 1 0 1 0
+1 0 1 1 1
+0 1 0 0 1
+1 1 0 0 1
+0 1 1 1 0
+Hamiltonian Cycle exists:
+ 0  1  2  4  3  0 </div>
+        </div>
+    </details>
+
+    <details>
+        <summary>Extra 3: Max-Min (Divide & Conquer)</summary>
+        <div class="content">
+            <div class="toolbar"><button class="copy-btn" onclick="copyCode(this, 'c20')">Copy Code</button></div>
+<pre><code id="c20">#include &lt;stdio.h&gt;
+
+struct Pair { int min; int max; };
+
+struct Pair getMinMax(int arr[], int low, int high) {
+    struct Pair minmax, mml, mmr;
+    int mid;
+
+    // If there is only one element
+    if (low == high) {
+        minmax.max = arr[low];
+        minmax.min = arr[low];
+        return minmax;
+    }
+
+    // If there are exactly two elements
+    if (high == low + 1) {
+        if (arr[low] &gt; arr[high]) {
+            minmax.max = arr[low];
+            minmax.min = arr[high];
+        } else {
+            minmax.max = arr[high];
+            minmax.min = arr[low];
+        }
+        return minmax;
+    }
+
+    // If there are more than 2 elements, divide
+    mid = (low + high) / 2;
+    mml = getMinMax(arr, low, mid);
+    mmr = getMinMax(arr, mid + 1, high);
+
+    // Combine results
+    if (mml.min &lt; mmr.min) minmax.min = mml.min;
+    else minmax.min = mmr.min;
+
+    if (mml.max &gt; mmr.max) minmax.max = mml.max;
+    else minmax.max = mmr.max;
+
+    return minmax;
+}
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    
+    int arr[n];
+    printf("Enter the elements: ");
+    for(int i=0; i&lt;n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    struct Pair minmax = getMinMax(arr, 0, n - 1);
+
+    printf("Minimum element is %d\n", minmax.min);
+    printf("Maximum element is %d\n", minmax.max);
+    return 0;
+}</code></pre>
+            <div class="sample-io"><strong>Sample Input/Output:</strong>
+Enter number of elements: 6
+Enter the elements: 1000 11 445 1 330 3000
+Minimum element is 1
+Maximum element is 3000</div>
+        </div>
+    </details>
+
+</div>
+
+<script>
+    function copyCode(button, elementId) {
+        const codeElement = document.getElementById(elementId);
+        const textToCopy = codeElement.innerText; // Preserves newlines and spaces
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalText = button.innerText;
+            const originalBg = button.style.backgroundColor;
+            
+            button.innerText = "Copied!";
+            button.style.backgroundColor = "#4caf50"; 
+            
+            setTimeout(() => {
+                button.innerText = originalText;
+                button.style.backgroundColor = originalBg;
+            }, 2000);
+        }).catch(err => {
+            console.error('Copy failed', err);
+            alert("Failed to copy code.");
+        });
+    }
+</script>
+</body>
+</html>
